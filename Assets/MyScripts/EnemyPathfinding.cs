@@ -12,6 +12,9 @@ public class EnemyPathfinding : MonoBehaviour
     //object the AI is trying to navigate towards
     [SerializeField] GameObject navPoint;
 
+    //mine: a list of all navpoints
+    public List<GameObject> navPointList = new List<GameObject>();
+
     [SerializeField] GameObject player;
 
     [SerializeField] float stoppingDistance, detectionDistance;
