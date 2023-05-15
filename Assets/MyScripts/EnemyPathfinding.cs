@@ -111,7 +111,7 @@ public class EnemyPathfinding : MonoBehaviour
             //move toward target
             if (Vector3.Distance(instance.transform.position, instance.player.transform.position) < instance.detectionDistance)
             {
-                instance.StateMachine.SetState(new ChaseState(instance)); //put back to chase
+                instance.StateMachine.SetState(new ChaseState(instance));
             }
             else if (Vector3.Distance(instance.transform.position, instance.navPointToFollow.transform.position) > instance.stoppingDistance)
             {
@@ -215,7 +215,7 @@ public class EnemyPathfinding : MonoBehaviour
         IEnumerator stunnedTime(GameObject stunnedEnemy)
         {
             //put the player in a "stunned" animation
-            stunnedEnemy.GetComponent<Animator>().Play("IdleAnimation");
+            stunnedEnemy.GetComponent<Animator>().Play("StunnedAnimation");
 
             //stunned for 5 seconds
             yield return new WaitForSeconds(5.5f);
