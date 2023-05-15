@@ -19,7 +19,7 @@ public class EnemyPathfinding : MonoBehaviour
 
     [SerializeField] GameObject player;
 
-    [SerializeField] float stoppingDistance, detectionDistance;
+    public float stoppingDistance, detectionDistance;
 
 
     //mine: get random item
@@ -41,7 +41,7 @@ public class EnemyPathfinding : MonoBehaviour
 
         if(!TryGetComponent<NavMeshAgent>(out agent))
         {
-            Debug.LogError("This object needs an nav mesh agent attached to it");
+            Debug.Log("This object needs an nav mesh agent attached to it");
         }
     }
 
@@ -211,7 +211,7 @@ public class EnemyPathfinding : MonoBehaviour
         }
 
 
-        //mine: wait time for stun
+        //mine: couritine wait time for stun
         IEnumerator stunnedTime(GameObject stunnedEnemy)
         {
             //put the player in a "stunned" animation
