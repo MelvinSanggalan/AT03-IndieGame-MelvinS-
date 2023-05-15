@@ -4,11 +4,14 @@ ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
-      74: -887982601649841707
-    second: metarig|metarigAction
+      74: -8851611885158258760
+    second: metarig|IdleAnimation
   - first:
-      74: -2463781497245029270
-    second: metarig|metarigAction.001
+      74: -950823257098383752
+    second: metarig|RunAnimation
+  - first:
+      74: 8170144346883483670
+    second: metarig|WalkAnimation
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -38,18 +41,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: metarig|metarigAction
-      takeName: metarig|metarigAction
+      name: metarig|IdleAnimation
+      takeName: metarig|IdleAnimation
       internalID: 0
       firstFrame: 0
-      lastFrame: 1
+      lastFrame: 59
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -67,11 +70,40 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: metarig|metarigAction.001
-      takeName: metarig|metarigAction.001
+      name: metarig|RunAnimation
+      takeName: metarig|RunAnimation
       internalID: 0
       firstFrame: 0
-      lastFrame: 39
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: metarig|WalkAnimation
+      takeName: metarig|WalkAnimation
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 60
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

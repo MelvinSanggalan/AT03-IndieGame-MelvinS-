@@ -10,7 +10,7 @@ public class EnemyPathfinding : MonoBehaviour
     private NavMeshAgent agent;
 
     //object the AI is trying to navigate towards
-    [SerializeField] GameObject navPoint;
+    //[SerializeField] GameObject navPoint;
 
     //mine: a list of all navpoints
     [SerializeField] List<GameObject> navPointList = new List<GameObject>();
@@ -98,7 +98,10 @@ public class EnemyPathfinding : MonoBehaviour
             instance.navPointToFollow = instance.GetRandomItem(instance.navPointList);
 
             //mine: play run animation
-            instance.transform.GetChild(0).GetComponent<Animator>().Play("RunAnim");
+            instance.transform.GetChild(0).GetComponent<Animator>().Play("WalkAnimation");
+
+            //mine: change speed
+            instance.agent.speed = 4;
 
         }
 
@@ -108,7 +111,7 @@ public class EnemyPathfinding : MonoBehaviour
             //move toward target
             if (Vector3.Distance(instance.transform.position, instance.player.transform.position) < instance.detectionDistance)
             {
-                instance.StateMachine.SetState(new ChaseState(instance));
+                instance.StateMachine.SetState(new ChaseState(instance)); //put back to chase
             }
             else if (Vector3.Distance(instance.transform.position, instance.navPointToFollow.transform.position) > instance.stoppingDistance)
             {
@@ -137,7 +140,7 @@ public class EnemyPathfinding : MonoBehaviour
             instance.agent.isStopped = true;
 
             //mine: play idle animation
-            instance.transform.GetChild(0).GetComponent<Animator>().Play("IdleAnim");
+            instance.transform.GetChild(0).GetComponent<Animator>().Play("IdleAnimation");
         }
 
         public override void OnUpdate()
@@ -146,7 +149,7 @@ public class EnemyPathfinding : MonoBehaviour
             {
                 instance.StateMachine.SetState(new ChaseState(instance));
             }
-            else if (Vector3.Distance(instance.transform.position, instance.navPoint.transform.position) > instance.stoppingDistance)
+            else
             {
                 //set state to MoveState
                 instance.StateMachine.SetState(new MoveState(instance));
@@ -167,7 +170,9 @@ public class EnemyPathfinding : MonoBehaviour
             instance.agent.isStopped = false;
 
             //mine: play run animation
-            instance.transform.GetChild(0).GetComponent<Animator>().Play("RunAnim");
+            instance.transform.GetChild(0).GetComponent<Animator>().Play("RunAnimation");
+            //mine: change speed
+            instance.agent.speed = 6;
         }
 
         public override void OnUpdate()
@@ -184,6 +189,53 @@ public class EnemyPathfinding : MonoBehaviour
 
         }
     }
+
+
+
+
+    //mine: stunnedstate
+    public class StunnedState : EnemyMoveState
+    {
+        public StunnedState(EnemyPathfinding _instance) : base(_instance)
+        {
+        }
+
+        public override void OnEnter()
+        {
+            Debug.Log("Entering StunnedState");
+            instance.agent.isStopped = true;
+
+            //mine: play stunned coroutine
+            instance.StartCoroutine(stunnedTime(instance.transform.GetChild(0).gameObject));
+
+        }
+
+
+        //mine: wait time for stun
+        IEnumerator stunnedTime(GameObject stunnedEnemy)
+        {
+            //put the player in a "stunned" animation
+            stunnedEnemy.GetComponent<Animator>().Play("IdleAnimation");
+
+            //stunned for 5 seconds
+            yield return new WaitForSeconds(5.5f);
+
+            //check if player is near, if not then go back to movestate
+            if (Vector3.Distance(instance.transform.position, instance.player.transform.position) < instance.detectionDistance)
+            {
+                instance.StateMachine.SetState(new ChaseState(instance));
+            }
+            else
+            {
+                //set state to MoveState
+                instance.StateMachine.SetState(new MoveState(instance));
+            }
+
+        }
+
+    }
+
+
 
 
     private void OnDrawGizmos()
