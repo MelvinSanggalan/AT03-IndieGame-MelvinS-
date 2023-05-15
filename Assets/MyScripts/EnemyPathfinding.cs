@@ -13,11 +13,24 @@ public class EnemyPathfinding : MonoBehaviour
     [SerializeField] GameObject navPoint;
 
     //mine: a list of all navpoints
-    public List<GameObject> navPointList = new List<GameObject>();
+    [SerializeField] List<GameObject> navPointList = new List<GameObject>();
+    //mine: the next randomized node to follow
+    GameObject navPointToFollow;
 
     [SerializeField] GameObject player;
 
     [SerializeField] float stoppingDistance, detectionDistance;
+
+
+    //mine: get random item
+    public GameObject GetRandomItem(List<GameObject>navPointListRandom)
+    {
+        int randomNum = Random.Range(0, navPointListRandom.Count);
+        print(randomNum);
+        GameObject printRandom = navPointListRandom[randomNum];
+        print(printRandom);
+        return printRandom;
+    }
 
 
     public StateMachine StateMachine { get; private set; }
@@ -80,6 +93,13 @@ public class EnemyPathfinding : MonoBehaviour
             Debug.Log("Entering MoveState");
             //set the agent to stopped.
             instance.agent.isStopped = false;
+
+            //mine: get a random item
+            instance.navPointToFollow = instance.GetRandomItem(instance.navPointList);
+
+            //mine: play run animation
+            instance.transform.GetChild(0).GetComponent<Animator>().Play("RunAnim");
+
         }
 
         public override void OnUpdate()
@@ -90,9 +110,12 @@ public class EnemyPathfinding : MonoBehaviour
             {
                 instance.StateMachine.SetState(new ChaseState(instance));
             }
-            else if (Vector3.Distance(instance.transform.position, instance.navPoint.transform.position) > instance.stoppingDistance)
+            else if (Vector3.Distance(instance.transform.position, instance.navPointToFollow.transform.position) > instance.stoppingDistance)
             {
-                instance.agent.SetDestination(instance.navPoint.transform.position);
+                //instance.agent.SetDestination(instance.navPoint.transform.position);
+                //mine: move to random navpoint
+                instance.agent.SetDestination(instance.navPointToFollow.transform.position);
+             
             }
             else
             {
@@ -113,9 +136,8 @@ public class EnemyPathfinding : MonoBehaviour
             Debug.Log("Entering IdleState");
             instance.agent.isStopped = true;
 
-            //chase animation test
+            //mine: play idle animation
             instance.transform.GetChild(0).GetComponent<Animator>().Play("IdleAnim");
-            //chase animation test
         }
 
         public override void OnUpdate()
@@ -144,9 +166,8 @@ public class EnemyPathfinding : MonoBehaviour
             Debug.Log("Entering ChaseState");
             instance.agent.isStopped = false;
 
-            //chase animation test
+            //mine: play run animation
             instance.transform.GetChild(0).GetComponent<Animator>().Play("RunAnim");
-            //chase animation test
         }
 
         public override void OnUpdate()
