@@ -139,23 +139,33 @@ public class EnemyPathfinding : MonoBehaviour
             Debug.Log("Entering IdleState");
             instance.agent.isStopped = true;
 
-            //mine: play idle animation
-            instance.transform.GetChild(0).GetComponent<Animator>().Play("IdleAnimation");
+            //mine: play idletime coroutine
+            instance.StartCoroutine(idleTime(instance.transform.GetChild(0).gameObject));
+        }
+
+        //mine: couritine wait time for idle
+        IEnumerator idleTime(GameObject idleTimeEnemy)
+        {
+            //put the player in an idle animation
+            idleTimeEnemy.GetComponent<Animator>().Play("IdleAnimation");
+
+            //idle for 5 seconds
+            yield return new WaitForSeconds(5.5f);
+
+            //go to MoveState after time
+            instance.StateMachine.SetState(new MoveState(instance));
+            
         }
 
         public override void OnUpdate()
         {
+            //check if player is near, if not then go back to movestate
             if (Vector3.Distance(instance.transform.position, instance.player.transform.position) < instance.detectionDistance)
             {
                 instance.StateMachine.SetState(new ChaseState(instance));
             }
-            else
-            {
-                //set state to MoveState
-                instance.StateMachine.SetState(new MoveState(instance));
-            }
-
         }
+
     }
 
     public class ChaseState : EnemyMoveState
@@ -183,8 +193,8 @@ public class EnemyPathfinding : MonoBehaviour
             }
             else
             {
-                //set to IdleState
-                instance.StateMachine.SetState(new IdleState(instance));
+                //set to MoveState
+                instance.StateMachine.SetState(new MoveState(instance));
             }
 
         }

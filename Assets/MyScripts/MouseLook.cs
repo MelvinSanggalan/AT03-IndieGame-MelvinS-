@@ -44,7 +44,7 @@ public class MouseLook : MonoBehaviour
         //crosshair change colour if its an interactable object
         RaycastHit hitInteractable;
 
-        if(Physics.Raycast(transform.position, transform.forward, out hitInteractable, 4))
+        if(Physics.Raycast(transform.position, transform.forward, out hitInteractable, 6))
         {
             if(hitInteractable.collider.gameObject.TryGetComponent<IInteraction>(out IInteraction inter) == true)
             {
@@ -74,7 +74,7 @@ public class MouseLook : MonoBehaviour
     {
         RaycastHit hit;
 
-        if(Physics.Raycast(transform.position, transform.forward, out hit, 4))
+        if(Physics.Raycast(transform.position, transform.forward, out hit, 6))
         {
             if(hit.collider.gameObject.TryGetComponent<IInteraction>(out IInteraction inter))
             {
