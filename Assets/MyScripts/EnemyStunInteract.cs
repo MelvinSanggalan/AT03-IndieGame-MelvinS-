@@ -17,7 +17,7 @@ public class EnemyStunInteract : MonoBehaviour, IInteraction
 
     public void Activate()
     {
-        Debug.Log("Chocolate collected.");
+        Debug.Log("Enemy stunned.");
 
         //set enemy state to chase
         enemyScript.StateMachine.SetState(new EnemyPathfinding.StunnedState(enemyScript));
