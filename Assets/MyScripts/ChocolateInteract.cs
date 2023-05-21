@@ -8,6 +8,8 @@ public class ChocolateInteract : MonoBehaviour, IInteraction
     public GameObject enemy;
     //reference to enemy's EnemyPathfinding script
     private EnemyPathfinding enemyScript;
+    //reference to barricades
+    public GameObject barricades;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +24,14 @@ public class ChocolateInteract : MonoBehaviour, IInteraction
 
         //detection distance to 200 so the player chases enemy no matter the distance
         enemyScript.detectionDistance = 200;
+
+        //make cookie model and spotlight invisible
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(false);
+
+        //make barricades visible
+        barricades.SetActive(true);
+
         //set enemy state to chase
         enemyScript.StateMachine.SetState(new EnemyPathfinding.ChaseState(enemyScript));
     }
