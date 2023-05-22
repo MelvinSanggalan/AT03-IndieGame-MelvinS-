@@ -17,6 +17,9 @@ public class EnemyPathfinding : MonoBehaviour
     //mine: the next randomized node to follow
     GameObject navPointToFollow;
 
+    //mine: bool for enemy stunned
+    private bool enemyIsStunned = false;
+
     [SerializeField] GameObject player;
 
     public float stoppingDistance, detectionDistance;
@@ -152,9 +155,12 @@ public class EnemyPathfinding : MonoBehaviour
             //idle for 5 seconds
             yield return new WaitForSeconds(5.5f);
 
-            //go to MoveState after time
-            instance.StateMachine.SetState(new MoveState(instance));
-            
+            //check if enemyIsStunned bool is false so player doesnt change states while stunned.
+            if(instance.enemyIsStunned == false)
+            {
+                //go to MoveState after time
+                instance.StateMachine.SetState(new MoveState(instance));
+            }
         }
 
         public override void OnUpdate()
@@ -215,6 +221,9 @@ public class EnemyPathfinding : MonoBehaviour
             Debug.Log("Entering StunnedState");
             instance.agent.isStopped = true;
 
+            //mine: make enemyIsStunned true
+            instance.enemyIsStunned = true;
+
             //mine: play stunned coroutine
             instance.StartCoroutine(stunnedTime(instance.transform.GetChild(0).gameObject));
 
@@ -229,6 +238,9 @@ public class EnemyPathfinding : MonoBehaviour
 
             //stunned for 5 seconds
             yield return new WaitForSeconds(5.5f);
+
+            //mine: make enemyIsStunned false
+            instance.enemyIsStunned = false;
 
             //check if player is near, if not then go back to movestate
             if (Vector3.Distance(instance.transform.position, instance.player.transform.position) < instance.detectionDistance)

@@ -13,8 +13,9 @@ public class MouseLook : MonoBehaviour
     private Vector2 result;
     private Transform character;
 
-    //mine: crosshair reference
+    //mine: crosshair references
     public Image crosshair;
+    public Image crosshair2;
 
     //mine: cooldown bool
     public bool onCooldown = false;
@@ -44,24 +45,46 @@ public class MouseLook : MonoBehaviour
         //crosshair change colour if its an interactable object
         RaycastHit hitInteractable;
 
+        //use raycast to check for interactable objects
         if(Physics.Raycast(transform.position, transform.forward, out hitInteractable, 6))
         {
+            //check if object has IInteraction
             if(hitInteractable.collider.gameObject.TryGetComponent<IInteraction>(out IInteraction inter) == true)
             {
-                crosshair.color = Color.green;
+                //check if object has Enemy tag and make the crosshair a slash symbol. If not, then make crosshair green.
+                if(hitInteractable.collider.gameObject.tag == "Enemy")
+                {
+                    crosshair2.gameObject.SetActive(true);
+                    crosshair.gameObject.SetActive(false);
+                }
+                else
+                {
+                    crosshair.color = Color.green;
+                    crosshair.gameObject.SetActive(true);
+                    crosshair2.gameObject.SetActive(false);
+                }
             }
             else
             {
                 if (crosshair != null && crosshair.color != Color.white)
                 {
                     crosshair.color = Color.white;
+                    crosshair.gameObject.SetActive(true);
+                    crosshair2.gameObject.SetActive(false);
                 }
             }
+        }
+        //if nothing is detected by raycast then make crosshair white.
+        else
+        {
+            crosshair.color = Color.white;
+            crosshair.gameObject.SetActive(true);
+            crosshair2.gameObject.SetActive(false);
         }
 
 
         //mine: button that sends raycast for interaction
-        if(Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0))
         {
             Interact();
         }
@@ -93,7 +116,7 @@ public class MouseLook : MonoBehaviour
             Debug.Log("Interaction cooldown start.");
 
             //10 seconds wait time
-            yield return new WaitForSeconds(10.5f);
+            yield return new WaitForSeconds(5.5f);
 
             //bool turn false and cooldown end
             Debug.Log("Interaction cooldown end!!!!!!!!!");
