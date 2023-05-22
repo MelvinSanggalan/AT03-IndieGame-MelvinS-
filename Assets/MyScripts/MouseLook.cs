@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/* Script created by Melvin Jr Sanggalan
+ * Last updated 22/05/2023
+ * Script for the player's movement and mouselook.
+ */
+
 public class MouseLook : MonoBehaviour
 {
     public float sensitivity = 2.5f;

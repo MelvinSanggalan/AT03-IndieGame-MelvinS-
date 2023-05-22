@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.AI;
 using FiniteStateMachine;
 
+/* Script created by Melvin Jr Sanggalan
+ * Last updated 22/05/2023
+ * Script for the Enemy AI's StateMachine
+ */
+
 public class EnemyPathfinding : MonoBehaviour
 {
     //reference to the NavAgentMesh attached to this object
@@ -19,6 +24,16 @@ public class EnemyPathfinding : MonoBehaviour
 
     //mine: bool for enemy stunned
     private bool enemyIsStunned = false;
+
+    //mine: bool for detecting if player has been caught
+    public bool playerIsCaught = false;
+
+    //mine: bool for detecting if enemy is chasing
+    public bool enemyIsChasing = false;
+
+    //mine: reference to game over screen
+    public GameObject gameOverScreen;
+
 
     [SerializeField] GameObject player;
 
@@ -97,6 +112,9 @@ public class EnemyPathfinding : MonoBehaviour
             //set the agent to stopped.
             instance.agent.isStopped = false;
 
+            //mine: enemyIsChasing to false
+            instance.enemyIsChasing = false;
+
             //mine: get a random item
             instance.navPointToFollow = instance.GetRandomItem(instance.navPointList);
 
@@ -142,6 +160,9 @@ public class EnemyPathfinding : MonoBehaviour
             Debug.Log("Entering IdleState");
             instance.agent.isStopped = true;
 
+            //mine: enemyIsChasing to false
+            instance.enemyIsChasing = false;
+
             //mine: play idletime coroutine
             instance.StartCoroutine(idleTime(instance.transform.GetChild(0).gameObject));
         }
@@ -185,6 +206,7 @@ public class EnemyPathfinding : MonoBehaviour
             Debug.Log("Entering ChaseState");
             instance.agent.isStopped = false;
 
+            instance.enemyIsChasing = true;
             //mine: play run animation
             instance.transform.GetChild(0).GetComponent<Animator>().Play("RunAnimation");
             //mine: change speed
@@ -193,17 +215,34 @@ public class EnemyPathfinding : MonoBehaviour
 
         public override void OnUpdate()
         {
-            if(Vector3.Distance(instance.transform.position, instance.player.transform.position) < instance.detectionDistance)
+            //mine: check if player has already been caught
+            if(instance.playerIsCaught == false)
             {
-                instance.agent.SetDestination(instance.player.transform.position);
-            }
-            else
-            {
-                //set to MoveState
-                instance.StateMachine.SetState(new MoveState(instance));
+                if (Vector3.Distance(instance.transform.position, instance.player.transform.position) < instance.detectionDistance)
+                {
+                    instance.agent.SetDestination(instance.player.transform.position);
+
+                }
+                else
+                {
+                    //mine: enemyIsChasing to false
+                    instance.enemyIsChasing = false;
+
+                    //set to MoveState
+                    instance.StateMachine.SetState(new MoveState(instance));
+                }
             }
 
+            else
+            {
+                Debug.Log("Game Over.");
+                instance.StateMachine.SetState(new EndState(instance));
+            }
+
+
+
         }
+
     }
 
 
@@ -226,6 +265,9 @@ public class EnemyPathfinding : MonoBehaviour
 
             //mine: play stunned coroutine
             instance.StartCoroutine(stunnedTime(instance.transform.GetChild(0).gameObject));
+
+            //mine: enemyIsChasing to false
+            instance.enemyIsChasing = false;
 
         }
 
@@ -260,9 +302,53 @@ public class EnemyPathfinding : MonoBehaviour
 
 
 
+
+    //mine: endstate 
+    public class EndState : EnemyMoveState
+    {
+        public EndState(EnemyPathfinding _instance) : base(_instance)
+        {
+        }
+
+        public override void OnEnter()
+        {
+            Debug.Log("Entering EndState");
+            instance.agent.isStopped = true;
+
+            //mine: make enemyIsStunned true
+            instance.enemyIsStunned = true;
+
+        }
+
+    }
+
+
+
+
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionDistance);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player" && playerIsCaught == false)
+        {
+            if(enemyIsChasing == true)
+            {
+                playerIsCaught = true;
+                Debug.Log("Player Touched whilst being Chased.");
+
+                gameOverScreen.SetActive(true);
+
+                //make it so the player can see and move their mouse
+                Cursor.lockState = CursorLockMode.None;
+
+
+            }
+
+        }
     }
 }

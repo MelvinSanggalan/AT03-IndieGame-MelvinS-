@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     public float gravity = 30f;
     public float jumpForce = 20f;
     public float doubleJumpForce = 10f;
-    public float moveSpeed = 3.5f;
+    public float moveSpeed = 5f;
 
     //Value-type variable
     private float velocity = 0f;
@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour
     //Reference-type variable
     public CharacterController controller;
 
+
+    //reference to door
+    public GameObject theDoor;
 
 
     //Awake is called before Start
@@ -31,6 +34,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         currentSpeed = moveSpeed;
+
+        StartCoroutine(startIntermission());
+
+        Debug.Log("Coroutine started.");
     }
 
 
@@ -85,5 +92,16 @@ public class PlayerController : MonoBehaviour
         motionStep.y += velocity;
         controller.Move(motionStep  * Time.deltaTime);
 
+    }
+
+    //coroutine for a brief intermission before the player starts the game.
+    IEnumerator startIntermission()
+    {
+        theDoor.SetActive(true);
+
+        //wait for 5 seconds
+        yield return new WaitForSeconds(8f);
+
+        theDoor.SetActive(false);
     }
 }

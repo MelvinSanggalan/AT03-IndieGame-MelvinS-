@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/* Script created by Melvin Jr Sanggalan
+ * Last updated 22/05/2023
+ * Script moves player to another scene.
+ */
+
 public class StartGameScript : MonoBehaviour
 {
 
@@ -13,7 +18,7 @@ public class StartGameScript : MonoBehaviour
     {
         SceneManager.LoadScene(gameStartScene);
 
-        Debug.Log("Game Started.");
+        Debug.Log("Player moved to a new scene.");
     }
 
 }

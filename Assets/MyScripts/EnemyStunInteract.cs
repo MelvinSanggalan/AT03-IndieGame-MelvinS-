@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Script created by Melvin Jr Sanggalan
+ * Last updated 20/05/2023
+ * Allows the player to interact with an enemy to put them into the StunnedState.
+ */
+
 public class EnemyStunInteract : MonoBehaviour, IInteraction
 {
    

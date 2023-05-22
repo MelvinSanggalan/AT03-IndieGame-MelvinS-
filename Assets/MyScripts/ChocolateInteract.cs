@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Script created by Melvin Jr Sanggalan
+ * Last updated 20/05/2023
+ * Script makes the enemy AI into an infinite ChaseState as well as enable the Barricades and WindowEscape gameObjects.
+ */
+
 public class ChocolateInteract : MonoBehaviour, IInteraction
 {
     //reference to enemy
@@ -10,6 +15,11 @@ public class ChocolateInteract : MonoBehaviour, IInteraction
     private EnemyPathfinding enemyScript;
     //reference to barricades
     public GameObject barricades;
+    //reference to windowescape
+    public GameObject windowEscape;
+    //reference to chasewarningtext
+    public GameObject chaseWarningText;
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,17 +39,14 @@ public class ChocolateInteract : MonoBehaviour, IInteraction
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(1).gameObject.SetActive(false);
 
-        //make barricades visible
+        //make barricades, windowescape, and chasewarningtext visible
         barricades.SetActive(true);
+        windowEscape.SetActive(true);
+        chaseWarningText.SetActive(true);
 
         //set enemy state to chase
         enemyScript.StateMachine.SetState(new EnemyPathfinding.ChaseState(enemyScript));
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
 
