@@ -2247,7 +2247,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Interaction / Scratch : E'
+  m_Text: 'Interaction / Scratch : Y'
 --- !u!222 &388341923
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7146,7 +7146,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: As the amount of Critter Catchers steadily grows, hunting for food in the
-    forest has been difficult. For the last 2 weeks, you've been secretly trespassing
+    forest has been hopeless. For the last 2 weeks, you've been secretly trespassing
     this civilian's home at night. They seem to never lock their bedroom window so
     it's always a free opportunity to steal food. This night will be the same as
     any other, although as you stealthily walk up to the window, you feel like you
