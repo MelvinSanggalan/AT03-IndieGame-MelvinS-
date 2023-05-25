@@ -58,6 +58,7 @@ public class MouseLook : MonoBehaviour
         //transform.localRotation = Quaternion.AngleAxis(-result.y, Vector3.right);
         character.rotation = Quaternion.AngleAxis(result.x, character.up);
 
+
         //crosshair change colour if its an interactable object
         RaycastHit hitInteractable;
 
@@ -99,10 +100,17 @@ public class MouseLook : MonoBehaviour
         }
 
 
-        //mine: button that sends raycast for interaction
-        if (Input.GetMouseButton(0))
+        //if player left clicks or xbox controller rt
+        if (Mathf.Round(Input.GetAxisRaw("Fire1")) > 0 || Input.GetButton("Fire1"))
         {
             Interact();
+        }
+
+        //if player presses escape it closes their game
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("Player quit game.");
+            Application.Quit();
         }
 
     }

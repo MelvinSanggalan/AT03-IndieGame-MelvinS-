@@ -34,4 +34,31 @@ public class StartGameScript : MonoBehaviour
         Debug.Log("Player moved to a new scene.");
     }
 
+    public void QuitGame()
+    {
+        Debug.Log("Player quit game.");
+        Application.Quit();
+    }
+
+    public void Update()
+    {
+        //for xbox controller if they press A, it starts their game
+        if(Input.GetButton("Submit"))
+        {
+            //play button sfx
+            audioSource.Play();
+
+            SceneManager.LoadScene(gameStartScene);
+
+            Debug.Log("Player moved to a new scene.");
+        }
+
+        //if player presses escape it closes their game
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("Player quit game.");
+            Application.Quit();
+        }
+    }
+
 }
