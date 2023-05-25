@@ -18,12 +18,23 @@ public class MouseLook : MonoBehaviour
     private Vector2 result;
     private Transform character;
 
-    //mine: crosshair references
+    //crosshair references
     public Image crosshair;
     public Image crosshair2;
 
-    //mine: cooldown bool
-    public bool onCooldown = false;
+    public Text cooldownText;
+
+    //cooldown bool for object interact
+    public bool onCooldownObject = false;
+
+    //cooldown bool for enemy interact
+    public bool onCooldownEnemy = false;
+
+    //reference to slash sfx
+    public GameObject slashSFX;
+
+
+
 
 
 
@@ -106,28 +117,77 @@ public class MouseLook : MonoBehaviour
         {
             if(hit.collider.gameObject.TryGetComponent<IInteraction>(out IInteraction inter))
             {
-                if(onCooldown == false)
+                if(onCooldownObject == false)
                 {
-                    onCooldown = true;
-                    StartCoroutine(cooldownTime());
-                    inter.Activate();
+                    if(hit.collider.gameObject.tag == "Object")
+                    {
+                        onCooldownObject = true;
+                        StartCoroutine(cooldownTimeObject());
+                        inter.Activate();
+                    }
                 }
+                if(onCooldownEnemy == false)
+                    if (hit.collider.gameObject.tag == "Enemy")
+                    {
+                        onCooldownEnemy = true;
+                        StartCoroutine(cooldownTimeEnemy());
+                        inter.Activate();
+                    }
             }
         }
 
-        IEnumerator cooldownTime()
+        //cooldown for object interaction
+        IEnumerator cooldownTimeObject()
         {
-            //put the player in a "stunned" animation
-            Debug.Log("Interaction cooldown start.");
+            Debug.Log("Object interaction cooldown start.");
 
-            //10 seconds wait time
-            yield return new WaitForSeconds(5.5f);
+            //1 second wait time
+            yield return new WaitForSeconds(1.5f);
 
             //bool turn false and cooldown end
-            Debug.Log("Interaction cooldown end!!!!!!!!!");
-            onCooldown = false;
+            Debug.Log("Object interaction cooldown end!!!!!!!!!");
+            onCooldownObject = false;
 
         }
+
+        //cooldown for enemy interaction
+        IEnumerator cooldownTimeEnemy()
+        {
+            Debug.Log("Enemy interaction cooldown start.");
+
+            //play slash sfx
+            slashSFX.SetActive(true);
+
+            //ui cooldown timer
+            cooldownText.text = "10";
+            yield return new WaitForSeconds(1);
+            cooldownText.text = "9";
+            yield return new WaitForSeconds(1);
+            cooldownText.text = "8";
+            yield return new WaitForSeconds(1);
+            cooldownText.text = "7";
+            yield return new WaitForSeconds(1);
+            cooldownText.text = "6";
+            yield return new WaitForSeconds(1);
+            cooldownText.text = "5";
+            yield return new WaitForSeconds(1);
+            cooldownText.text = "4";
+            yield return new WaitForSeconds(1);
+            cooldownText.text = "3";
+            yield return new WaitForSeconds(1);
+            cooldownText.text = "2";
+            yield return new WaitForSeconds(1);
+            cooldownText.text = "1";
+            yield return new WaitForSeconds(1);
+            cooldownText.text = " ";
+
+            //bool turn false and cooldown end
+            Debug.Log("Enemy interaction cooldown end!!!!!!!!!");
+            slashSFX.SetActive(false);
+            onCooldownEnemy = false;
+
+        }
+
 
     }    
 

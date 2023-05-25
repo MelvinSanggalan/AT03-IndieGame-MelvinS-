@@ -16,6 +16,11 @@ public class WindowEscapeInteract : MonoBehaviour, IInteraction
     //reference to WinGameScreen
     public GameObject winGameScreen;
 
+    //reference to sound effect for winning the game
+    public GameObject winGameSFX;
+    //reference to alert sound effect so we can turn it off
+    public GameObject alertLight;
+
 
     // Start is called before the first frame update
     void Start()
@@ -34,5 +39,9 @@ public class WindowEscapeInteract : MonoBehaviour, IInteraction
 
         //make it so the player can see and move their mouse
         Cursor.lockState = CursorLockMode.None;
+
+        winGameSFX.SetActive(true);
+        alertLight.SetActive(false);
+
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /* Script created by Melvin Jr Sanggalan
- * Last updated 20/05/2023
+ * Last updated 25/05/2023
  * Script makes the enemy AI into an infinite ChaseState as well as enable the Barricades and WindowEscape gameObjects.
  */
 
@@ -19,6 +19,11 @@ public class ChocolateInteract : MonoBehaviour, IInteraction
     public GameObject windowEscape;
     //reference to chasewarningtext
     public GameObject chaseWarningText;
+    //reference to alert light
+    public GameObject alertLight;
+
+    //bool to check if chocolate has already been collected.
+    private bool chocolateCollected = false;
 
 
     // Start is called before the first frame update
@@ -30,22 +35,28 @@ public class ChocolateInteract : MonoBehaviour, IInteraction
 
     public void Activate()
     {
-        Debug.Log("Chocolate collected.");
+        if(chocolateCollected == false)
+        {
+            chocolateCollected = true;
+            Debug.Log("Chocolate collected.");
 
-        //detection distance to 200 so the player chases enemy no matter the distance
-        enemyScript.detectionDistance = 200;
+            //detection distance to 200 so the player chases enemy no matter the distance
+            enemyScript.detectionDistance = 200;
 
-        //make cookie model and spotlight invisible
-        transform.GetChild(0).gameObject.SetActive(false);
-        transform.GetChild(1).gameObject.SetActive(false);
+            //make cookie model and spotlight invisible
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
 
-        //make barricades, windowescape, and chasewarningtext visible
-        barricades.SetActive(true);
-        windowEscape.SetActive(true);
-        chaseWarningText.SetActive(true);
+            //make barricades, windowescape, chasewarningtext, and alert light visible
+            barricades.SetActive(true);
+            windowEscape.SetActive(true);
+            chaseWarningText.SetActive(true);
+            alertLight.SetActive(true);
 
-        //set enemy state to chase
-        enemyScript.StateMachine.SetState(new EnemyPathfinding.ChaseState(enemyScript));
+            //set enemy state to chase
+            enemyScript.StateMachine.SetState(new EnemyPathfinding.ChaseState(enemyScript));
+        }
+
     }
 
 }

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    //movement variables
     public float gravity = 30f;
     public float jumpForce = 20f;
     public float doubleJumpForce = 10f;
-    public float moveSpeed = 5f;
+    public float moveSpeed = 3.5f;
 
     //Value-type variable
     private float velocity = 0f;
@@ -19,6 +20,9 @@ public class PlayerController : MonoBehaviour
     public CharacterController controller;
 
 
+    //reference to footstepsfx gameobject
+    public GameObject footSteps;
+
     //reference to door
     public GameObject theDoor;
 
@@ -29,15 +33,11 @@ public class PlayerController : MonoBehaviour
         TryGetComponent(out controller);
     }
 
-
     // Start is called before the first frame update
     void Start()
     {
         currentSpeed = moveSpeed;
-
         StartCoroutine(startIntermission());
-
-        Debug.Log("Coroutine started.");
     }
 
 
@@ -90,8 +90,36 @@ public class PlayerController : MonoBehaviour
         motionStep += transform.right * Input.GetAxisRaw("Horizontal");
         motionStep = currentSpeed * motionStep;
         motionStep.y += velocity;
-        controller.Move(motionStep  * Time.deltaTime);
+        controller.Move(motionStep * Time.deltaTime);
 
+        //sfx
+        if (Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("s") || Input.GetKey("d"))
+        {
+            footstepPlay();
+        }
+        else
+        {
+            footstepStop();
+        }
+    }
+
+
+
+
+
+
+
+
+    //footstep on function
+    void footstepPlay()
+    {
+        footSteps.SetActive(true);
+    }
+
+    //footstep off function
+    void footstepStop()
+    {
+        footSteps.SetActive(false);
     }
 
     //coroutine for a brief intermission before the player starts the game.

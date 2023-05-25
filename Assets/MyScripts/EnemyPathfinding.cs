@@ -33,6 +33,14 @@ public class EnemyPathfinding : MonoBehaviour
 
     //mine: reference to game over screen
     public GameObject gameOverScreen;
+    //reference to lose game sfx
+    public GameObject loseGameSFX;
+    //reference to alert light sound effect so we can turn it off
+    public GameObject alertLight;
+
+    //all of enemy SFX
+    public GameObject enemyWalkSFX;
+    public GameObject enemyRunSFX;
 
 
     [SerializeField] GameObject player;
@@ -124,6 +132,8 @@ public class EnemyPathfinding : MonoBehaviour
             //mine: change speed
             instance.agent.speed = 4;
 
+            //play walk sfx
+            instance.enemyWalkSFX.SetActive(true);
         }
 
         public override void OnUpdate()
@@ -146,6 +156,12 @@ public class EnemyPathfinding : MonoBehaviour
                 //set state to IdleState
                 instance.StateMachine.SetState(new IdleState(instance));
             }
+        }
+
+        public override void OnExit()
+        {
+            //stop walk sfx
+            instance.enemyWalkSFX.SetActive(false);
         }
     }
 
@@ -211,6 +227,9 @@ public class EnemyPathfinding : MonoBehaviour
             instance.transform.GetChild(0).GetComponent<Animator>().Play("RunAnimation");
             //mine: change speed
             instance.agent.speed = 6;
+
+            //play run sfx
+            instance.enemyRunSFX.SetActive(true);
         }
 
         public override void OnUpdate()
@@ -241,6 +260,12 @@ public class EnemyPathfinding : MonoBehaviour
 
 
 
+        }
+
+        public override void OnExit()
+        {
+            //stop run sfx
+            instance.enemyRunSFX.SetActive(false);
         }
 
     }
@@ -318,6 +343,8 @@ public class EnemyPathfinding : MonoBehaviour
             //mine: make enemyIsStunned true
             instance.enemyIsStunned = true;
 
+            instance.gameObject.tag = "Player";
+
         }
 
     }
@@ -342,6 +369,8 @@ public class EnemyPathfinding : MonoBehaviour
                 Debug.Log("Player Touched whilst being Chased.");
 
                 gameOverScreen.SetActive(true);
+                loseGameSFX.SetActive(true);
+                alertLight.SetActive(false);
 
                 //make it so the player can see and move their mouse
                 Cursor.lockState = CursorLockMode.None;
