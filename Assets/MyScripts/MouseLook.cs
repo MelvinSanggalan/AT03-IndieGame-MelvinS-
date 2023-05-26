@@ -116,7 +116,7 @@ public class MouseLook : MonoBehaviour
     }
 
 
-    //mine: raycast for interaction
+    //raycast for interaction
     private void Interact()
     {
         RaycastHit hit;
@@ -202,7 +202,7 @@ public class MouseLook : MonoBehaviour
 
 }
 
-//mine: finitestatemachine for interaction
+//finitestatemachine for interaction
 public interface IInteraction
 {
     public void Activate();

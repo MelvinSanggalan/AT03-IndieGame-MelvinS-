@@ -17,21 +17,21 @@ public class EnemyPathfinding : MonoBehaviour
     //object the AI is trying to navigate towards
     //[SerializeField] GameObject navPoint;
 
-    //mine: a list of all navpoints
+    //a list of all navpoints
     [SerializeField] List<GameObject> navPointList = new List<GameObject>();
-    //mine: the next randomized node to follow
+    //the next randomized node to follow
     GameObject navPointToFollow;
 
-    //mine: bool for enemy stunned
+    //bool for enemy stunned
     private bool enemyIsStunned = false;
 
-    //mine: bool for detecting if player has been caught
+    //bool for detecting if player has been caught
     public bool playerIsCaught = false;
 
-    //mine: bool for detecting if enemy is chasing
+    //bool for detecting if enemy is chasing
     public bool enemyIsChasing = false;
 
-    //mine: reference to game over screen
+    //reference to game over screen
     public GameObject gameOverScreen;
     //reference to lose game sfx
     public GameObject loseGameSFX;
@@ -48,7 +48,7 @@ public class EnemyPathfinding : MonoBehaviour
     public float stoppingDistance, detectionDistance;
 
 
-    //mine: get random item
+    //get random item
     public GameObject GetRandomItem(List<GameObject>navPointListRandom)
     {
         int randomNum = Random.Range(0, navPointListRandom.Count);
@@ -120,16 +120,16 @@ public class EnemyPathfinding : MonoBehaviour
             //set the agent to stopped.
             instance.agent.isStopped = false;
 
-            //mine: enemyIsChasing to false
+            //enemyIsChasing to false
             instance.enemyIsChasing = false;
 
-            //mine: get a random item
+            //get a random item
             instance.navPointToFollow = instance.GetRandomItem(instance.navPointList);
 
-            //mine: play run animation
+            //play run animation
             instance.transform.GetChild(0).GetComponent<Animator>().Play("WalkAnimation");
 
-            //mine: change speed
+            //change speed
             instance.agent.speed = 4;
 
             //play walk sfx
@@ -147,7 +147,7 @@ public class EnemyPathfinding : MonoBehaviour
             else if (Vector3.Distance(instance.transform.position, instance.navPointToFollow.transform.position) > instance.stoppingDistance)
             {
                 //instance.agent.SetDestination(instance.navPoint.transform.position);
-                //mine: move to random navpoint
+                //move to random navpoint
                 instance.agent.SetDestination(instance.navPointToFollow.transform.position);
              
             }
@@ -176,14 +176,14 @@ public class EnemyPathfinding : MonoBehaviour
             Debug.Log("Entering IdleState");
             instance.agent.isStopped = true;
 
-            //mine: enemyIsChasing to false
+            //enemyIsChasing to false
             instance.enemyIsChasing = false;
 
-            //mine: play idletime coroutine
+            //play idletime coroutine
             instance.StartCoroutine(idleTime(instance.transform.GetChild(0).gameObject));
         }
 
-        //mine: couritine wait time for idle
+        //couritine wait time for idle
         IEnumerator idleTime(GameObject idleTimeEnemy)
         {
             //put the player in an idle animation
@@ -223,9 +223,9 @@ public class EnemyPathfinding : MonoBehaviour
             instance.agent.isStopped = false;
 
             instance.enemyIsChasing = true;
-            //mine: play run animation
+            //play run animation
             instance.transform.GetChild(0).GetComponent<Animator>().Play("RunAnimation");
-            //mine: change speed
+            //change speed
             instance.agent.speed = 6;
 
             //play run sfx
@@ -234,7 +234,7 @@ public class EnemyPathfinding : MonoBehaviour
 
         public override void OnUpdate()
         {
-            //mine: check if player has already been caught
+            //check if player has already been caught
             if(instance.playerIsCaught == false)
             {
                 if (Vector3.Distance(instance.transform.position, instance.player.transform.position) < instance.detectionDistance)
@@ -244,7 +244,7 @@ public class EnemyPathfinding : MonoBehaviour
                 }
                 else
                 {
-                    //mine: enemyIsChasing to false
+                    //enemyIsChasing to false
                     instance.enemyIsChasing = false;
 
                     //set to MoveState
@@ -273,7 +273,7 @@ public class EnemyPathfinding : MonoBehaviour
 
 
 
-    //mine: stunnedstate
+    //stunnedstate
     public class StunnedState : EnemyMoveState
     {
         public StunnedState(EnemyPathfinding _instance) : base(_instance)
@@ -285,19 +285,19 @@ public class EnemyPathfinding : MonoBehaviour
             Debug.Log("Entering StunnedState");
             instance.agent.isStopped = true;
 
-            //mine: make enemyIsStunned true
+            //make enemyIsStunned true
             instance.enemyIsStunned = true;
 
-            //mine: play stunned coroutine
+            //play stunned coroutine
             instance.StartCoroutine(stunnedTime(instance.transform.GetChild(0).gameObject));
 
-            //mine: enemyIsChasing to false
+            //enemyIsChasing to false
             instance.enemyIsChasing = false;
 
         }
 
 
-        //mine: couritine wait time for stun
+        //couritine wait time for stun
         IEnumerator stunnedTime(GameObject stunnedEnemy)
         {
             //put the player in a "stunned" animation
@@ -306,7 +306,7 @@ public class EnemyPathfinding : MonoBehaviour
             //stunned for 5 seconds
             yield return new WaitForSeconds(5.5f);
 
-            //mine: make enemyIsStunned false
+            //make enemyIsStunned false
             instance.enemyIsStunned = false;
 
             //check if player is near, if not then go back to movestate
@@ -328,7 +328,7 @@ public class EnemyPathfinding : MonoBehaviour
 
 
 
-    //mine: endstate 
+    //endstate 
     public class EndState : EnemyMoveState
     {
         public EndState(EnemyPathfinding _instance) : base(_instance)
@@ -340,7 +340,7 @@ public class EnemyPathfinding : MonoBehaviour
             Debug.Log("Entering EndState");
             instance.agent.isStopped = true;
 
-            //mine: make enemyIsStunned true
+            //make enemyIsStunned true
             instance.enemyIsStunned = true;
 
             instance.gameObject.tag = "Player";
