@@ -40,6 +40,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: EnemyBody
+    uniqueID: 1028977551
+    locked: 0
+  - name: ParticleLayer
+    uniqueID: 3261995897
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
